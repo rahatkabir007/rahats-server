@@ -19,6 +19,14 @@ async function run() {
     try {
         await client.connect();
         console.log("server connected");
+        const database = client.db('personalDatabase');
+        const newsCollection = database.collection('news');
+
+        app.get('/news', async (req, res) => {
+            const cursor = newsCollection.find({});
+            const news = await cursor.toArray();
+            res.json(news);
+        })
     }
     finally {
         // await client.close()
